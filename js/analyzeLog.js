@@ -1,7 +1,7 @@
-vislab.analyzeLog = function(){
+vislab.analyzeLog = function( log_path ){
   $.ajax( {
     type: "GET",
-    url: "log/sample_log.txt",
+    url: log_path,
     success: function( txt ){
       for( id in vislab.members){
         member = vislab.members[ id ];

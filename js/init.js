@@ -5,7 +5,7 @@ $( function(){
     dataType: "json",
     success: function( json ){
       vislab.members = json;
-      vislab.analyzeLog();
+      vislab.analyzeLog( "log/sample_log.txt" );
     },
     error: function( err ){
       console.log( err );
