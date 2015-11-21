@@ -42,7 +42,7 @@ vislab.drawGraph = function(){
     var member = vislab.members[ id ];
     data.push( {
       id: id,
-      value: member.say_count
+      value: member.counts.say
     } );
   };
 
