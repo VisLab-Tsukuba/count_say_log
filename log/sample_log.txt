@@ -1,3 +1,7 @@
+内容: sesta_1さんの発表
+発表: sesta_1
+司会: sesta_2
+議事録: sesta_2
 出席: Sesta_1, sesta_2
 欠席: Sesta_3
 遅刻: Sesta_2

@@ -26,10 +26,26 @@ vislab.analyzeLog = function( log_path ){
     nicknames.forEach( function( nickname ){
       counts.say += log_string.split( nickname ).length - 1;
 
+      var contents_re = new RegExp("内容.*" + nickname + ".*\n");
+      var speech_re = new RegExp("発表.*" + nickname + ".*\n");
+      var chair_re = new RegExp("司会.*" + nickname + ".*\n");
+      var writer_re = new RegExp("議事録.*" + nickname + ".*\n");
       var attend_re = new RegExp("出席.*" + nickname + ".*\n");
       var absense_re = new RegExp("欠席.*" + nickname + ".*\n");
       var late_re = new RegExp("遅刻.*" + nickname + ".*\n");
 
+      if( log_string.match( contents_re ) ){
+        counts.say --;
+      }
+      if( log_string.match( speech_re ) ){
+        counts.say --;
+      }
+      if( log_string.match( chair_re ) ){
+        counts.say --;
+      }
+      if( log_string.match( writer_re ) ){
+        counts.say --;
+      }
       if( log_string.match( attend_re ) ){
         counts.attend ++;
         counts.say --;
