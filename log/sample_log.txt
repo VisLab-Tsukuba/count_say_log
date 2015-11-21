@@ -1,10 +1,10 @@
-出席: 武田
+出席: Sesta, sesta
 欠席: Sesta
-遅刻: 修平
+遅刻: Sesta
 
-## 武田さんの発表
+## sestaさんの発表
 
-武田
+Sesta
   すごいですね
 
 sesta
