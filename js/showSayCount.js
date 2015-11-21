@@ -1,8 +1,76 @@
 vislab.showSayCount = function(){
-  for( id in this.members){
-    member = vislab.members[ id ];
-    $( "#member-list" ).append( $( "<li></li>", {
-      "class": "member"
-    } ).text( member.name + " : " + member.say_count + "回"  ) );
-  }
+  var d3_svg = d3.select( "#vis-area" )
+    .append( "svg" )
+    .attr( "width", vislab.graph.width )
+    .attr( "height", vislab.graph.height );
+
+  var d3_graph = d3_svg.append( "g" )
+    .attr( "transform", "translate(" + vislab.graph.margin_left + "," + vislab.graph.margin_top + ")");
+
+  d3_graph.append( "g" ).attr( "class", "x axis" );
+  d3_graph.append( "g" ).attr( "class", "y axis" );
+
+  vislab.drawGraph();
+};
+
+vislab.drawGraph = function(){
+  var width = vislab.graph.width - vislab.graph.margin_left - vislab.graph.margin_right;
+  var height = vislab.graph.height - vislab.graph.margin_top - vislab.graph.margin_bottom;
+
+  var d3_graph = d3.select( "#vis-area svg>g" );
+
+  var x = d3.scale.ordinal()
+    .rangeRoundBands( [ 0, width ], .2 );
+
+  var y = d3.scale.linear()
+    .range( [ height, 0 ] );
+
+  var xAxis = d3.svg.axis()
+    .scale( x )
+    .orient( "bottom" )
+    .tickFormat( function( d ){
+      return vislab.members[ d ].name;
+    } );
+
+  var yAxis = d3.svg.axis()
+    .scale( y )
+    .orient( "left" );
+
+  var data = [];
+  for( id in vislab.members ){
+    var member = vislab.members[ id ];
+    data.push( {
+      id: id,
+      value: member.say_count
+    } );
+  };
+
+  x.domain( data.map( function( d ){ return d.id; } ) );
+  y.domain( [ 0, d3.max( data, function( d ){ return d.value; } ) ] );
+
+  d3_graph.select( ".x.axis" )
+    .attr( "transform", "translate(0," + height + ")" )
+    .call( xAxis )
+    .selectAll( "text" )
+    .style( "text-anchor", "end" )
+    .attr( "dx", "-.8em" )
+    .attr( "dy", ".15em" )
+    .attr( "transform", "rotate(-65)" );
+
+  d3_graph.select( ".y.axis" ).call( yAxis );
+
+  d3_graph.selectAll( ".bar" )
+    .data( data )
+    .enter().append( "rect" )
+    .attr( "class", "bar" )
+    .attr( "fill", "white" );
+
+  d3_graph.selectAll( ".bar" )
+    .transition().duration( 500 )
+    .delay( function( d, i ){ return i * 10; } )
+    .attr( "fill", "red" )
+    .attr( "x", function( d ){ return x( d.id ); } )
+    .attr( "y", function( d ){ return y( d.value ); } )
+    .attr( "width", x.rangeBand() )
+    .attr( "height", function( d ){ return height - y( d.value ); } );
 };
