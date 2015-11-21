@@ -1,12 +1,17 @@
 {
-  "takeda": {
-    "name": "武田修平",
-    "nicknames": [ "武田", "修平" ],
-    "type": "m2"
+  "sesta_1": {
+    "name": "Sesta_1",
+    "nicknames": [ "sesta_1", "Sesta_1" ],
+    "type": "m1"
   },
-  "sesta": {
-    "name": "Sesta",
-    "nicknames": [ "sesta", "Sesta" ],
+  "sesta_3": {
+    "name": "Sesta_2",
+    "nicknames": [ "sesta_2", "Sesta_2" ],
+    "type": "m1"
+  },
+  "sesta_2": {
+    "name": "Sesta_3",
+    "nicknames": [ "sesta_3", "Sesta_3" ],
     "type": "m1"
   }
 }

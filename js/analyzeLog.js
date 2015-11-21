@@ -7,9 +7,14 @@ vislab.analyzeLog = function( log_path ){
     success: function( txt ){
       for( id in vislab.members ){
         member = vislab.members[ id ];
-        if( !member.say_count )
-          member.say_count = 0;
-        member.say_count += countName( txt, member.nicknames );
+        if( !member.counts )
+          member.counts = {
+            say: 0,
+            attend: 0,
+            absense: 0,
+            late: 0
+          };
+        member.counts = countName( txt, member.nicknames, member.counts );
       }
     },
     error: function( err ){
@@ -17,13 +22,28 @@ vislab.analyzeLog = function( log_path ){
     }
   } );
 
-  function countName( log_string, nicknames ){
-    say_count = 0;
-
+  function countName( log_string, nicknames, counts ){
     nicknames.forEach( function( nickname ){
-      say_count += log_string.split( nickname ).length - 1;
+      counts.say += log_string.split( nickname ).length - 1;
+
+      var attend_re = new RegExp("出席.*" + nickname + ".*\n");
+      var absense_re = new RegExp("欠席.*" + nickname + ".*\n");
+      var late_re = new RegExp("遅刻.*" + nickname + ".*\n");
+
+      if( log_string.match( attend_re ) ){
+        counts.attend ++;
+        counts.say --;
+      }
+      if( log_string.match( absense_re ) ){
+        counts.absense ++;
+        counts.say --;
+      }
+      if( log_string.match( late_re ) ){
+        counts.late ++;
+        counts.say --;
+      }
     } );
 
-    return say_count;
+    return counts;
   }
 };

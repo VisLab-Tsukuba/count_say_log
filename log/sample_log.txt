@@ -1,11 +1,12 @@
-出席: Sesta, sesta
-欠席: Sesta
-遅刻: Sesta
+出席: Sesta_1, sesta_2
+欠席: Sesta_3
+遅刻: Sesta_2
 
-## sestaさんの発表
+## sesta_1さんの発表
 
-Sesta
-  すごいですね
-
-sesta
-  本当にね、いないけどね
+Sesta_1
+  hoge
+sesta_2
+  foo
+sesta_1
+  hogehoge
