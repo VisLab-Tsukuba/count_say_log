@@ -34,7 +34,8 @@ vislab.drawGraph = function(){
 
   var yAxis = d3.svg.axis()
     .scale( y )
-    .orient( "left" );
+    .orient( "left" )
+    .ticks( 5 );
 
   var data = [];
   for( id in vislab.members ){
