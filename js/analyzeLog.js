@@ -11,6 +11,10 @@ vislab.analyzeLog = function(){
         member.nicknames.forEach( function( nickname ){
           member.say_count += txt.split( nickname ).length - 1;
         } );
+
+        $( "#member-list" ).append( $( "<li></li>", {
+          "class": "member"
+        } ).text( member.name + " : " + member.say_count + "回"  ) );
       }
     }
   } );
