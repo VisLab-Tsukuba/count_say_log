@@ -2,19 +2,22 @@ vislab.analyzeLog = function( log_path ){
   $.ajax( {
     type: "GET",
     url: log_path,
+    dataType: "text",
+    async: false,
     success: function( txt ){
-      for( id in vislab.members){
+      for( id in vislab.members ){
         member = vislab.members[ id ];
         if( !member.say_count )
           member.say_count = 0;
         member.say_count += countName( txt, member.nicknames );
       }
-
-      vislab.showSayCount();
+    },
+    error: function( err ){
+      console.log( err );
     }
   } );
 
-  var countName = function( log_string, nicknames ){
+  function countName( log_string, nicknames ){
     say_count = 0;
 
     nicknames.forEach( function( nickname ){
