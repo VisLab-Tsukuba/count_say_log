@@ -1,7 +1,12 @@
 {
-  takeda: {
-    name: "武田修平", // 表示する時の名前
-    nicknames: [ "武田", "修平" ], // 議事録内での呼ばれ方
-    type: "m2" // 所属とか
+  "takeda": {
+    "name": "武田修平",
+    "nicknames": [ "武田", "修平" ],
+    "type": "m2"
+  },
+  "sesta": {
+    "name": "Sesta",
+    "nicknames": [ "sesta", "Sesta" ],
+    "type": "m1"
   }
 }
