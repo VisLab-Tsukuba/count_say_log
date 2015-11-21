@@ -1,13 +1,24 @@
-.axis {
-  font: 15px sans-serif;
+#vis-area{
+  margin-top: 50px;
+
+  .axis {
+    font-size: 20px;
+    font-family: "Comic Sans", "Comic Sans MS", "Chalkboard", "ChalkboardSE-Regular", "Marker Felt", "Purisa", "URW Chancery L";
+    fill: yellow;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: yellow;
+    shape-rendering: crispEdges;
+  }
+
+  .bar{
+    fill: yellow;
+  }
 }
 
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {
+body{
+  text-align: center;
 }

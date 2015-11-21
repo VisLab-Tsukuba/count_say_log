@@ -55,20 +55,18 @@ vislab.drawGraph = function(){
     .style( "text-anchor", "end" )
     .attr( "dx", "-.8em" )
     .attr( "dy", ".15em" )
-    .attr( "transform", "rotate(-65)" );
+    .attr( "transform", "rotate(-45)" );
 
   d3_graph.select( ".y.axis" ).call( yAxis );
 
   d3_graph.selectAll( ".bar" )
     .data( data )
     .enter().append( "rect" )
-    .attr( "class", "bar" )
-    .attr( "fill", "white" );
+    .attr( "class", "bar" );
 
   d3_graph.selectAll( ".bar" )
     .transition().duration( 500 )
     .delay( function( d, i ){ return i * 10; } )
-    .attr( "fill", "red" )
     .attr( "x", function( d ){ return x( d.id ); } )
     .attr( "y", function( d ){ return y( d.value ); } )
     .attr( "width", x.rangeBand() )
