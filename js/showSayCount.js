@@ -10,10 +10,14 @@ vislab.showSayCount = function(){
   d3_graph.append( "g" ).attr( "class", "x axis" );
   d3_graph.append( "g" ).attr( "class", "y axis" );
 
-  vislab.drawGraph();
+  vislab.drawGraph( "say" );
+
+  $( "#count-type select" ).on( "change", function(){
+    vislab.drawGraph( $( this ).val() );
+  } );
 };
 
-vislab.drawGraph = function(){
+vislab.drawGraph = function( counts_type ){
   var width = vislab.graph.width - vislab.graph.margin_left - vislab.graph.margin_right;
   var height = vislab.graph.height - vislab.graph.margin_top - vislab.graph.margin_bottom;
 
@@ -42,7 +46,7 @@ vislab.drawGraph = function(){
     var member = vislab.members[ id ];
     data.push( {
       id: id,
-      value: member.counts.say
+      value: member.counts[ counts_type ]
     } );
   };
 
