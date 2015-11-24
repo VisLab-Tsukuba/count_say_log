@@ -23,6 +23,14 @@ vislab.analyzeLog = function( log_path ){
   } );
 
   function countName( log_string, nicknames, counts ){
+    var contents = false;
+    var speech = false;
+    var chair = false
+    var writer = false;
+    var attend = false;
+    var absense = false;
+    var late = false;
+
     nicknames.forEach( function( nickname ){
       counts.say += log_string.split( nickname ).length - 1;
 
@@ -34,31 +42,39 @@ vislab.analyzeLog = function( log_path ){
       var absense_re = new RegExp("欠席.*" + nickname + ".*[\n\r]");
       var late_re = new RegExp("遅刻.*" + nickname + ".*[\n\r]");
 
-      if( log_string.match( contents_re ) ){
-        counts.say --;
-      }
-      if( log_string.match( speech_re ) ){
-        counts.say --;
-      }
-      if( log_string.match( chair_re ) ){
-        counts.say --;
-      }
-      if( log_string.match( writer_re ) ){
-        counts.say --;
-      }
-      if( log_string.match( attend_re ) ){
-        counts.attend ++;
-        counts.say --;
-      }
-      if( log_string.match( absense_re ) ){
-        counts.absense ++;
-        counts.say --;
-      }
-      if( log_string.match( late_re ) ){
-        counts.late ++;
-        counts.say --;
-      }
+      contents = contents || log_string.match( contents_re );
+      speech = speech || log_string.match( speech_re );
+      chair = chair || log_string.match( chair_re );
+      writer = writer || log_string.match( writer_re );
+      attend = attend || log_string.match( attend_re );
+      absense = absense || log_string.match( absense_re );
+      late = late || log_string.match( late_re );
     } );
+
+    if( contents ){
+      counts.say --;
+    }
+    if( speech ){
+      counts.say --;
+    }
+    if( chair ){
+      counts.say --;
+    }
+    if( writer ){
+      counts.say --;
+    }
+    if( attend || late ){
+      counts.attend ++;
+      counts.say --;
+    }
+    if( absense ){
+      counts.absense ++;
+      counts.say --;
+    }
+    if( late ){
+      counts.late ++;
+      counts.say --;
+    }
 
     return counts;
   }
