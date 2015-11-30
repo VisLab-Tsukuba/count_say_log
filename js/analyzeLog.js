@@ -5,16 +5,28 @@ vislab.analyzeLog = function( log_path ){
     dataType: "text",
     async: false,
     success: function( txt ){
+      var regx = /(\d{4})(\d{2})(\d{2})/;
+      var date = null;
+      log_path.replace( regx, function( match, p1, p2, p3 ){
+        try{
+          date = new Date( p1, p2 - 1, p3 );
+        }catch( err ){
+          console.log( match );
+        }
+      } );
+
       for( id in vislab.members ){
         member = vislab.members[ id ];
+
         if( !member.counts )
           member.counts = {
-            say: 0,
-            attend: 0,
-            absense: 0,
-            late: 0
+            say: [],
+            attend: [],
+            absense: [],
+            late: []
           };
-        member.counts = countName( txt, member.nicknames, member.counts );
+
+        member.counts = countName( txt, member.nicknames, member.counts, date );
       }
     },
     error: function( err ){
@@ -22,7 +34,7 @@ vislab.analyzeLog = function( log_path ){
     }
   } );
 
-  function countName( log_string, nicknames, counts ){
+  function countName( log_string, nicknames, counts, date ){
     var contents = false;
     var speech = false;
     var chair = false
@@ -32,7 +44,9 @@ vislab.analyzeLog = function( log_path ){
     var late = false;
 
     nicknames.forEach( function( nickname ){
-      counts.say += log_string.split( nickname ).length - 1;
+      log_string.split( nickname ).forEach( function( str ){
+        counts.say.push( date );
+      } );
 
       var contents_re = new RegExp("内容.*" + nickname + ".*[\n\r]");
       var speech_re = new RegExp("発表.*" + nickname + ".*[\n\r]");
@@ -52,28 +66,28 @@ vislab.analyzeLog = function( log_path ){
     } );
 
     if( contents ){
-      counts.say --;
+      counts.say.pop();
     }
     if( speech ){
-      counts.say --;
+      counts.say.pop();
     }
     if( chair ){
-      counts.say --;
+      counts.say.pop();
     }
     if( writer ){
-      counts.say --;
+      counts.say.pop();
     }
     if( attend || late ){
-      counts.attend ++;
-      counts.say --;
+      counts.attend.push( date );
+      counts.say.pop();
     }
     if( absense ){
-      counts.absense ++;
-      counts.say --;
+      counts.absense.push( date );
+      counts.say.pop();
     }
     if( late ){
-      counts.late ++;
-      counts.say --;
+      counts.late.push( date );
+      counts.say.pop();
     }
 
     return counts;

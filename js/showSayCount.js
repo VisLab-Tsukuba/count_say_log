@@ -51,7 +51,7 @@ vislab.drawGraph = function( counts_type ){
   };
 
   x.domain( data.map( function( d ){ return d.id; } ) );
-  y.domain( [ 0, d3.max( data, function( d ){ return d.value; } ) ] );
+  y.domain( [ 0, d3.max( data, function( d ){ return d.value.length; } ) ] );
 
   d3_graph.select( ".x.axis" )
     .attr( "transform", "translate(0," + height + ")" )
@@ -73,7 +73,7 @@ vislab.drawGraph = function( counts_type ){
     .transition().duration( 500 )
     .delay( function( d, i ){ return i * 10; } )
     .attr( "x", function( d ){ return x( d.id ); } )
-    .attr( "y", function( d ){ return y( d.value ); } )
+    .attr( "y", function( d ){ return y( d.value.length ); } )
     .attr( "width", x.rangeBand() )
-    .attr( "height", function( d ){ return height - y( d.value ); } );
+    .attr( "height", function( d ){ return height - y( d.value.length ); } );
 };
