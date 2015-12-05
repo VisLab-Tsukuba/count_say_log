@@ -12,23 +12,14 @@ $( function(){
     }
   } );
 
-  $.ajax( {
-    type: "GET",
-    url: "member.json",
-    dataType: "json",
-    async: false,
-    success: function( json ){
-      vislab.members = json;
-    },
-    error: function( err ){
-      console.log( err );
-    }
-  } );
+  $.getJSON( "member.json", function( json ){
+    console.log( json );
+    vislab.members = json;
 
-  if( vislab.members )
     vislab.file_paths.forEach( function( path ){
       vislab.analyzeLog( path );
     } );
 
-  vislab.showSayCount();
+    vislab.showSayCount();
+  } );
 } );
