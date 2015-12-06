@@ -13,7 +13,6 @@ $( function(){
   } );
 
   $.getJSON( "member.json", function( json ){
-    console.log( json );
     vislab.members = json;
 
     vislab.file_paths.forEach( function( path ){
