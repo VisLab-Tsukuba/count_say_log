@@ -12,12 +12,18 @@ vislab.showSayCount = function(){
 
   vislab.drawGraph( "say" );
 
-  $( "#count-type select" ).on( "change", function(){
-    vislab.drawGraph( $( this ).val() );
+  $( "#select-area #count-type" ).on( "change", function(){
+    vislab.drawGraph();
+  } );
+
+  $( "#select-area #sort-type" ).on( "change", function(){
+    vislab.drawGraph();
   } );
 };
 
-vislab.drawGraph = function( counts_type ){
+vislab.drawGraph = function(){
+  var counts_type = $( "#count-type" ).val();
+
   var width = vislab.graph.width - vislab.graph.margin_left - vislab.graph.margin_right;
   var height = vislab.graph.height - vislab.graph.margin_top - vislab.graph.margin_bottom;
 
