@@ -60,6 +60,13 @@ vislab.drawGraph = function(){
   var member_ids = data.map( function( d ){ return d.id; } );
 
   switch( sort_type ){
+    case "type":
+      member_ids.sort( function( a, b ){
+        if( vislab.members[ a ].type > vislab.members[ b ].type )
+          return 1;
+        return -1;
+      } );
+      break;
     case "count":
       var sort_data = data.concat();
       sort_data.sort( function( a, b ){
