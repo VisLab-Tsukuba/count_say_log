@@ -12,12 +12,19 @@ vislab.showSayCount = function(){
 
   vislab.drawGraph( "say" );
 
-  $( "#count-type select" ).on( "change", function(){
-    vislab.drawGraph( $( this ).val() );
+  $( "#select-area #count-type" ).on( "change", function(){
+    vislab.drawGraph();
+  } );
+
+  $( "#select-area #sort-type" ).on( "change", function(){
+    vislab.drawGraph();
   } );
 };
 
-vislab.drawGraph = function( counts_type ){
+vislab.drawGraph = function(){
+  var counts_type = $( "#count-type" ).val();
+  var sort_type = $( "#sort-type" ).val();
+
   var width = vislab.graph.width - vislab.graph.margin_left - vislab.graph.margin_right;
   var height = vislab.graph.height - vislab.graph.margin_top - vislab.graph.margin_bottom;
 
@@ -50,7 +57,28 @@ vislab.drawGraph = function( counts_type ){
     } );
   };
 
-  x.domain( data.map( function( d ){ return d.id; } ) );
+  var member_ids = data.map( function( d ){ return d.id; } );
+
+  switch( sort_type ){
+    case "type":
+      member_ids.sort( function( a, b ){
+        if( vislab.members[ a ].type > vislab.members[ b ].type )
+          return 1;
+        return -1;
+      } );
+      break;
+    case "count":
+      var sort_data = data.concat();
+      sort_data.sort( function( a, b ){
+        if( a.value.length > b.value.length )
+          return -1;
+        return 1;
+      } );
+      member_ids = sort_data.map( function( d ){ return d.id; } );
+      break;
+  }
+
+  x.domain( member_ids );
   y.domain( [ 0, d3.max( data, function( d ){ return d.value.length; } ) ] );
 
   d3_graph.select( ".x.axis" )

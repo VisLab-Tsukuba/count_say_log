@@ -14,12 +14,17 @@
   <div id="contents">
     <h1 id="title">Say Count</h1>
 
-    <div id="count-type">
-      <select>
-        <option value="say" selected>Say</option>
-        <option value="attend">Attend</option>
-        <option value="absense">Absense</option>
-        <option value="late">Late</option>
+    <div id="select-area">
+      <select id="count-type">
+        <option value="say" selected>Say Count</option>
+        <option value="attend">Attend Count</option>
+        <option value="absense">Absense Count</option>
+        <option value="late">Late Count</option>
+      </select>
+      <select id="sort-type">
+        <option value="id" selected>Sort By Json Index</option>
+        <option value="type">Sort By Member Type</option>
+        <option value="count">Sort By Count</option>
       </select>
     </div>
     <div id="vis-area"></div>
