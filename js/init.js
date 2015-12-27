@@ -19,6 +19,16 @@ $( function(){
       vislab.analyzeLog( path );
     } );
 
-    vislab.showSayCount();
+    vislab.initCountArea();
+    vislab.initTimeArea();
+  } );
+
+  $( "#select-area #count-type" ).on( "change", function(){
+    vislab.drawCountArea();
+    vislab.drawTimeArea();
+  } );
+
+  $( "#select-area #sort-type" ).on( "change", function(){
+    vislab.drawCountArea();
   } );
 } );

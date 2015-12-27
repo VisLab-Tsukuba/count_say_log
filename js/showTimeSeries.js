@@ -1,7 +1,7 @@
-vislab.initCountArea = function(){
+vislab.initTimeArea = function(){
   var d3_svg = d3.select( "#vis-area" )
     .append( "svg" )
-    .attr( "id", "count-area" )
+    .attr( "id", "time-area" )
     .attr( "width", vislab.graph.width )
     .attr( "height", vislab.graph.height );
 
@@ -11,30 +11,26 @@ vislab.initCountArea = function(){
   d3_graph.append( "g" ).attr( "class", "x axis" );
   d3_graph.append( "g" ).attr( "class", "y axis" );
 
-  vislab.drawCountArea();
+  vislab.drawTimeArea();
 };
 
-vislab.drawCountArea = function(){
+vislab.drawTimeArea = function(){
   var counts_type = $( "#count-type" ).val();
-  var sort_type = $( "#sort-type" ).val();
 
   var width = vislab.graph.width - vislab.graph.margin_left - vislab.graph.margin_right;
   var height = vislab.graph.height - vislab.graph.margin_top - vislab.graph.margin_bottom;
 
-  var d3_graph = d3.select( "#count-area g" );
+  var d3_graph = d3.select( "#time-area g" );
 
-  var x = d3.scale.ordinal()
-    .rangeRoundBands( [ 0, width ], .2 );
+  var x = d3.time.scale()
+    .range( [ 0, width ] );
 
   var y = d3.scale.linear()
     .range( [ height, 0 ] );
 
   var xAxis = d3.svg.axis()
     .scale( x )
-    .orient( "bottom" )
-    .tickFormat( function( d ){
-      return vislab.members[ d ].name;
-    } );
+    .orient( "bottom" );
 
   var yAxis = d3.svg.axis()
     .scale( y )
@@ -42,36 +38,16 @@ vislab.drawCountArea = function(){
     .ticks( 5 );
 
   var data = [];
-  for( id in vislab.members ){
-    var member = vislab.members[ id ];
+  for( date_string in vislab.time_series ){
+    if( date_string == "unknown" )
+      continue;
     data.push( {
-      id: id,
-      value: member.counts[ counts_type ]
+      date: vislab.time_series[ date_string ].date,
+      value: vislab.time_series[ date_string ][ counts_type ]
     } );
   };
 
-  var member_ids = data.map( function( d ){ return d.id; } );
-
-  switch( sort_type ){
-    case "type":
-      member_ids.sort( function( a, b ){
-        if( vislab.members[ a ].type > vislab.members[ b ].type )
-          return 1;
-        return -1;
-      } );
-      break;
-    case "count":
-      var sort_data = data.concat();
-      sort_data.sort( function( a, b ){
-        if( a.value.length > b.value.length )
-          return -1;
-        return 1;
-      } );
-      member_ids = sort_data.map( function( d ){ return d.id; } );
-      break;
-  }
-
-  x.domain( member_ids );
+  x.domain( [ d3.min( data, function( d ){ return d.date; } ), d3.max( data, function( d ){ return d.date; } ) ] );
   y.domain( [ 0, d3.max( data, function( d ){ return d.value.length; } ) ] );
 
   d3_graph.select( ".x.axis" )
@@ -93,8 +69,8 @@ vislab.drawCountArea = function(){
   d3_graph.selectAll( ".bar" )
     .transition().duration( 500 )
     .delay( function( d, i ){ return i * 10; } )
-    .attr( "x", function( d ){ return x( d.id ); } )
+    .attr( "x", function( d ){ return x( d.date ) - 5; } )
     .attr( "y", function( d ){ return y( d.value.length ); } )
-    .attr( "width", x.rangeBand() )
+    .attr( "width", 10 )
     .attr( "height", function( d ){ return height - y( d.value.length ); } );
 };
