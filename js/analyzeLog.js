@@ -11,6 +11,7 @@ vislab.analyzeLog = function( log_path ){
         try{
           date = new Date( p1, p2 - 1, p3 );
           vislab.time_series[ date + "" ] = {
+            date: date,
             say: [],
             attend: [],
             absense: [],
