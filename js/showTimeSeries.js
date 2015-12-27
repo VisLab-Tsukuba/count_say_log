@@ -69,7 +69,7 @@ vislab.drawTimeArea = function(){
   d3_graph.selectAll( ".bar" )
     .transition().duration( 500 )
     .delay( function( d, i ){ return i * 10; } )
-    .attr( "x", function( d ){ return x( d.date ); } )
+    .attr( "x", function( d ){ return x( d.date ) - 5; } )
     .attr( "y", function( d ){ return y( d.value.length ); } )
     .attr( "width", 10 )
     .attr( "height", function( d ){ return height - y( d.value.length ); } );
