@@ -6,10 +6,16 @@ vislab.analyzeLog = function( log_path ){
     async: false,
     success: function( txt ){
       var regx = /(\d{4})(\d{2})(\d{2})/;
-      var date = null;
+      var date = "unknown";
       log_path.replace( regx, function( match, p1, p2, p3 ){
         try{
           date = new Date( p1, p2 - 1, p3 );
+          vislab.time_series[ date + "" ] = {
+            say: [],
+            attend: [],
+            absense: [],
+            late: []
+          };
         }catch( err ){
           console.log( match );
         }
@@ -26,7 +32,7 @@ vislab.analyzeLog = function( log_path ){
             late: []
           };
 
-        member.counts = countName( txt, member.nicknames, member.counts, date );
+        member.counts = countName( txt, member.nicknames, member.counts, date, id );
       }
     },
     error: function( err ){
@@ -34,7 +40,7 @@ vislab.analyzeLog = function( log_path ){
     }
   } );
 
-  function countName( log_string, nicknames, counts, date ){
+  function countName( log_string, nicknames, counts, date, id ){
     var contents = false;
     var speech = false;
     var chair = false
@@ -46,7 +52,10 @@ vislab.analyzeLog = function( log_path ){
     nicknames.forEach( function( nickname ){
       log_string.split( nickname ).forEach( function( str ){
         counts.say.push( date );
+        vislab.time_series[ date + "" ].say.push( id );
       } );
+      counts.say.pop();
+      vislab.time_series[ date + "" ].say.pop();
 
       var contents_re = new RegExp("内容.*" + nickname + ".*[\n\r]");
       var speech_re = new RegExp("発表.*" + nickname + ".*[\n\r]");
@@ -67,27 +76,37 @@ vislab.analyzeLog = function( log_path ){
 
     if( contents ){
       counts.say.pop();
+      vislab.time_series[ date + "" ].say.pop();
     }
     if( speech ){
       counts.say.pop();
+      vislab.time_series[ date + "" ].say.pop();
     }
     if( chair ){
       counts.say.pop();
+      vislab.time_series[ date + "" ].say.pop();
     }
     if( writer ){
       counts.say.pop();
+      vislab.time_series[ date + "" ].say.pop();
     }
     if( attend || late ){
       counts.attend.push( date );
+      vislab.time_series[ date + "" ].attend.push( id );
       counts.say.pop();
+      vislab.time_series[ date + "" ].say.pop();
     }
     if( absense ){
       counts.absense.push( date );
+      vislab.time_series[ date + "" ].absense.push( id );
       counts.say.pop();
+      vislab.time_series[ date + "" ].say.pop();
     }
     if( late ){
       counts.late.push( date );
+      vislab.time_series[ date + "" ].late.push( id );
       counts.say.pop();
+      vislab.time_series[ date + "" ].say.pop();
     }
 
     return counts;
