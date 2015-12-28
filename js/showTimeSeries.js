@@ -94,7 +94,8 @@ vislab.drawTimeArea = function(){
     } );
 
   d3_graph.selectAll( ".text" )
-    .attr( "x", function( d ){ return x( d.date ) - 5; } )
-    .attr( "y", function( d ){ return y( d.value.length ); } )
-    .text( function( d ){ return d.date; } );
+    .attr( "x", function( d ){ return x( d.date ); } )
+    .attr( "y", function( d ){ return y( d.value.length ) - 10; } )
+    .attr( "text-anchor", "middle" )
+    .text( function( d ){ return d3.time.format( "%m/%d (%a)" )( d.date ); } );
 };
