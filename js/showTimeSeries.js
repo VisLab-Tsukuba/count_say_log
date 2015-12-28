@@ -47,7 +47,11 @@ vislab.drawTimeArea = function(){
     } );
   };
 
-  x.domain( [ d3.min( data, function( d ){ return d.date; } ), d3.max( data, function( d ){ return d.date; } ) ] );
+  var start_date = d3.min( data, function( d ){ return d.date; } );
+  var end_date =  d3.max( data, function( d ){ return d.date; } );
+  var margin_time = ( end_date.getTime() - start_date.getTime() ) /10;
+
+  x.domain( [ new Date( start_date.getTime() - margin_time ), new Date( end_date.getTime() + margin_time ) ] );
   y.domain( [ 0, d3.max( data, function( d ){ return d.value.length; } ) ] );
 
   d3_graph.select( ".x.axis" )
