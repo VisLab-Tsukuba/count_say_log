@@ -71,10 +71,31 @@ vislab.drawTimeArea = function(){
     .attr( "class", "bar" );
 
   d3_graph.selectAll( ".bar" )
+    .on( "mouseover", function( d ){
+      d3.select( ".text.time-" + d.date.getTime() )
+        .style( "opacity", "1" );
+    } )
+    .on( "mouseout", function( d ){
+      d3.select( ".text.time-" + d.date.getTime() )
+        .style( "opacity", "0" );
+    } )
     .transition().duration( 500 )
     .delay( function( d, i ){ return i * 10; } )
-    .attr( "x", function( d ){ return x( d.date ) - 5; } )
+    .attr( "x", function( d ){ return x( d.date ) - 15; } )
     .attr( "y", function( d ){ return y( d.value.length ); } )
     .attr( "width", 10 )
     .attr( "height", function( d ){ return height - y( d.value.length ); } );
+
+  d3_graph.selectAll( ".text" )
+    .data( data )
+    .enter().append( "text" )
+    .attr( "class", function( d ){
+      return "text time-" + d.date.getTime();
+    } );
+
+  d3_graph.selectAll( ".text" )
+    .attr( "x", function( d ){ return x( d.date ); } )
+    .attr( "y", function( d ){ return y( d.value.length ) - 10; } )
+    .attr( "text-anchor", "middle" )
+    .text( function( d ){ return d3.time.format( "%m/%d (%a)" )( d.date ); } );
 };
